@@ -1,0 +1,14 @@
+:root {
+    --primary: #83A2FF;
+    --secondary: #ff5722;
+    --success: #4caf50;
+    --info: #00bcd4;
+    --waring: #ff9800;
+    --denger: #f44336;
+    --light: #f1f1f1;
+    --dark: #212121;
+}
+
+.bg-primary{
+    background-color: var(--primary)!important;
+}

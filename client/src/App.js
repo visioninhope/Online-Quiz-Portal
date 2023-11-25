@@ -1,13 +1,15 @@
 import { Button, Flex } from 'antd';
+import "./stylesheets/theme.css"
+import "./stylesheets/alignments.css"
+import "./stylesheets/textelements.css"
+
 
 function App() {
   return (
     <div className="App">
-      <h1>Online Quiz Portal</h1>
-      <Button
-      type='primary'>
-        Primary Button
-      </Button>
+      <div className="h-screen bg-primary">
+
+      </div>
     </div>
   );
 }
