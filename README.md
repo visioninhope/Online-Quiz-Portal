@@ -30,6 +30,7 @@ These applications are popular for educational purposes, employee training, and 
 
 <hr/>
 ## How to Install?
-~~~ 
+
+```
 cd client && npm install
-~~~
+```
