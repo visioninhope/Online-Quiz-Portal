@@ -29,7 +29,8 @@
 These applications are popular for educational purposes, employee training, and as a form of entertainment. They can be standalone platforms or integrated into larger e-learning systems. The goal is to provide an engaging and interactive experience for users while offering a convenient way to create, manage, and participate in quizzes online.
 
 <hr/>
-## How to Install?
+
+ ## How to Install?
 
 ```
 cd client && npm install
