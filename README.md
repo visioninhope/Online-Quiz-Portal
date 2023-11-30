@@ -43,5 +43,9 @@ cd client && npm install
 ```
 npm run watch
 ```
-
+  - Next:
+```
+cd client && npm start
+```
+  - Access the web app at http://localhost:3000/
 
