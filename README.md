@@ -40,8 +40,8 @@ cd client && npm install
 ```
   - After FrontEnd and BackEnd dependencies Installation turn on Nodemon server.
   - In the root:
-  - ```
-    npm run watch
-    ```
+```
+npm run watch
+```
 
 
