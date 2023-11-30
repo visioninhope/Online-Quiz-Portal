@@ -31,7 +31,14 @@ These applications are popular for educational purposes, employee training, and 
 <hr/>
 
  ## How to Install?
-
+   - For BackEnd dependencies:
+```
+npm install
+```
+  - For FrontEnd dependencies:
 ```
 cd client && npm install
 ```
+
+
+
