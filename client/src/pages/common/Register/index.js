@@ -1,10 +1,21 @@
 import React from "react";
-import { Form } from "antd";
+import { Form, message } from "antd";
 import { Link } from "react-router-dom";
+import { registerUser } from "../../../apicalls/users";
 
 function Register() {
-    const onFinish=(values)=>{
-        console.log(values)
+    const onFinish = async (values) => {
+        try {
+            const response = await registerUser(values);
+            if (response.success) {
+                message.success(response.message);
+
+            } else {
+                message.error(response.message);
+            }
+        } catch (error) {
+            message.error(error.message);
+        }
     }
     return (
         <div className="flex justify-center item-center h-screen w-screen">
@@ -13,7 +24,7 @@ function Register() {
                     <h1 className="text-2xl">Register</h1>
                     <div className="divider"></div>
                     <Form layout="vertical" className="mt-2" onFinish={onFinish}>
-                    <Form.Item name="name" label="Name">
+                        <Form.Item name="name" label="Name">
                             <input type="text" />
                         </Form.Item>
                         <Form.Item name="email" label="Email">
