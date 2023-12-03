@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
       if (!validPassword) {
         return res
           .status(200)
-          .send({ message: "Invalid password", success: false });
+          .send({ message: "Invalid password!", success: false });
       }
   
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
       });
   
       res.send({
-        message: "User logged in successfully",
+        message: "User logged in successfully!",
         success: true,
         data: token,
       });
