@@ -9,6 +9,7 @@ import './stylesheets/custom-components.css';
 import './stylesheets/form-elements.css';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/common/Home";
+import './stylesheets/layout.css';
 
 
 

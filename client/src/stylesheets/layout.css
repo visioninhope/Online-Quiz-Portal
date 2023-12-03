@@ -1,0 +1,30 @@
+.layout{
+    padding: 15px;
+    width: 100vw;
+    height: 100vh;
+}
+
+.sidebar{
+    background-color: var(--primary);
+    padding: 10px;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.body{
+    width: 100%;
+}
+
+.close{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-end;
+}
+
+.header{
+    background-color: var(--primary);
+    color: white !important;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
