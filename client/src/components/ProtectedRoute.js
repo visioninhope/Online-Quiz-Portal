@@ -1,17 +1,60 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getUserInfo } from "../apicalls/users";
 import { message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetUser } from '../redux/usersSlice.js';
+import { useNavigate } from 'react-router-dom';
 
 function ProtectedRoute({ children }) {
+
     const { user } = useSelector((state) => state.users);
     const dispatch = useDispatch();
+    const [menu, setMenu] = useState([]);
+    const [collapsed, setCollapset] = useState(false);
+    const navigate = useNavigate();
+    const userMenu = [
+        {
+            title: "Home",
+            paths: ['/'],
+            icon: <i className='ri-home-line'></i>,
+            onclick: () => navigate('/')
+
+        },
+        {
+            title: "Reports",
+            paths: ['/reports'],
+            icon: <i className='ri-bar-chart-line'></i>,
+            onclick: () => navigate('/reports')
+        },
+        {
+            title: "Profile",
+            paths: ['/profile'],
+            icon: <i className='ri-user-line'></i>,
+            onclick: () => navigate('/profile')
+        },
+        {
+            title: "Logout",
+            paths: ['/logout'],
+            icon: <i className='ri-logout-box-line'></i>,
+            onclick: () => {
+                localStorage.removeItem('token');
+                navigate('/login');
+            },
+        }
+    ];
+    const adminMenu = [
+
+    ]
     const getUserData = async () => {
         try {
             const response = await getUserInfo();
             if (response.success) {
                 dispatch(SetUser(response.data));
+                if (response.data.isAdmin) {
+                    setMenu(adminMenu);
+                } else {
+                    setMenu(userMenu);
+                }
             } else {
                 message.error(response.message)
             }
@@ -23,20 +66,40 @@ function ProtectedRoute({ children }) {
         getUserData()
     }, []);
 
+    const activeRoute = window.location.pathname;
+
     return (
         <div className="layout">
-            <div className="flex gap-2 w-full h-full h-100">
+            <div className="flex gap-1 w-full h-full h-100">
                 <div className="sidebar">
+                    <div className='menu'>
                     <div className='close'>
-                    <i class="ri-close-line"></i>
+                        {!collapsed && <i class="ri-close-line"
+                            onClick={() => setCollapset(true)}></i>}
+                        {collapsed && <i class="ri-menu-line"
+                            onClick={() => setCollapset(false)}></i>}
+
                     </div>
-                    <h1 className='text-xl text-white'>Sidebar</h1>
+
+                        {menu.map((item, index) => {
+
+
+                            return <div className={`menu-item ${activeRoute === item.paths[0] && "active-menu-item"
+                                }`} key={index} onClick={item.onclick}>
+                                {item.icon}
+                                {!collapsed && <span>{item.title}</span>}
+                            </div>;
+                        })}
+                    </div>
                 </div>
                 <div className='body'>
 
                     <div className='header flex justify-between'>
                         <h1 className='text-2xl'>Online Quiz Portal</h1>
-                        <h1 className="text-xl text-white">{user?.name}</h1>
+                        <div className=' flex gap-1 item-center'>
+                            <i className='ri-user-line'></i>
+                            <h1 className="text-md underline">{user?.name}</h1>
+                        </div>
                     </div>
 
                     <div className='content'>
