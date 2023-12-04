@@ -43,7 +43,40 @@ function ProtectedRoute({ children }) {
         }
     ];
     const adminMenu = [
+        {
+            title: "Home",
+            paths: ['/'],
+            icon: <i className='ri-home-line'></i>,
+            onclick: () => navigate('/')
 
+        },
+        {
+            title: "Exams",
+            paths:["/admin/exams","/admin/exams/add"],
+            icon:<i className='ri-file-list-line'></i>,
+            onclick:()=>navigate('/admin/exams'),
+        },
+        {
+            title: "Reports",
+            paths: ['/reports'],
+            icon: <i className='ri-bar-chart-line'></i>,
+            onclick: () => navigate('/admin/reports')
+        },
+        {
+            title: "Profile",
+            paths: ['/profile'],
+            icon: <i className='ri-user-line'></i>,
+            onclick: () => navigate('/profile')
+        },
+        {
+            title: "Logout",
+            paths: ['/logout'],
+            icon: <i className='ri-logout-box-line'></i>,
+            onclick: () => {
+                localStorage.removeItem('token');
+                navigate('/login');
+            },
+        }
     ]
     const getUserData = async () => {
         try {
@@ -68,6 +101,13 @@ function ProtectedRoute({ children }) {
 
     const activeRoute = window.location.pathname;
 
+    const getIsActiveOrNot=(paths)=>{
+        if(paths.includes(activeRoute)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     return (
         <div className="layout">
             <div className="flex gap-1 w-full h-full h-100">
@@ -84,7 +124,7 @@ function ProtectedRoute({ children }) {
                         {menu.map((item, index) => {
 
 
-                            return <div className={`menu-item ${activeRoute === item.paths[0] && "active-menu-item"
+                            return <div className={`menu-item ${getIsActiveOrNot(item.paths) && "active-menu-item"
                                 }`} key={index} onClick={item.onclick}>
                                 {item.icon}
                                 {!collapsed && <span>{item.title}</span>}
