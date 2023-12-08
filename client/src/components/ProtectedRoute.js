@@ -4,9 +4,10 @@ import { message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetUser } from '../redux/usersSlice.js';
 import { useNavigate } from 'react-router-dom';
+import { HideLoading, ShowLoading } from '../redux/loaderSlice.js';
 
 function ProtectedRoute({ children }) {
-
+   
     const { user } = useSelector((state) => state.users);
     const dispatch = useDispatch();
     const [menu, setMenu] = useState([]);
@@ -80,7 +81,9 @@ function ProtectedRoute({ children }) {
     ]
     const getUserData = async () => {
         try {
+            dispatch(ShowLoading());
             const response = await getUserInfo();
+            dispatch(HideLoading());
             if (response.success) {
                 dispatch(SetUser(response.data));
                 if (response.data.isAdmin) {
@@ -89,6 +92,7 @@ function ProtectedRoute({ children }) {
                     setMenu(userMenu);
                 }
             } else {
+                dispatch(HideLoading());
                 message.error(response.message)
             }
         } catch (error) {

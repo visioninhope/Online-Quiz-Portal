@@ -2,11 +2,16 @@ import React from "react";
 import { Form, message } from "antd";
 import { Link } from "react-router-dom";
 import { registerUser } from "../../../apicalls/users";
+import { useDispatch } from "react-redux";
+import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 
 function Register() {
+    const dispatch=useDispatch();
     const onFinish = async (values) => {
         try {
+            dispatch(ShowLoading());
             const response = await registerUser(values);
+            dispatch(HideLoading());
             if (response.success) {
                 message.success(response.message);
 
@@ -14,6 +19,7 @@ function Register() {
                 message.error(response.message);
             }
         } catch (error) {
+            dispatch(HideLoading());
             message.error(error.message);
         }
     }
