@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Exam = require('../models/examModel');
 const authMiddleware = require('../middleware/authMiddleware');
+const Question=require('../models/questionModel');
 
 router.post('/add', authMiddleware, async (req, res) => {
     try {
@@ -101,4 +102,72 @@ router.post('/delete-exam-by-id',authMiddleware,async (req,res)=>{
     }
 });
 
+// add question to exam
+
+router.post('/add-question-to-exam',authMiddleware, async (req,res)=>{
+    try {
+        // add question to Question collection
+        const newQuestion=new Question(req.body);
+        const question=await newQuestion.save();
+
+        //add question to exam
+        const exam=await Exam.findById(req.body.exam);
+        exam.questions.push(question._id);
+        await exam.save();
+        res.send({
+            message: "New question has been added successfully!",
+            success:true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message:error.message,
+            data:error,
+            success:false,
+        });
+    }
+});
+
+
+//edit question in exam
+router.post("/edit-question-in-exam",authMiddleware,async (req,res)=>{
+    try {
+        // edit question inQuestion collection
+        await Question.findByIdAndUpdate(req.body.questionId,req.body);
+        res.send({
+            message:"Question edited successfully!",
+            success:true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message:error.message,
+            data:error,
+            success:false,
+        });
+    }
+});
+
+//delete question in exam
+router.post('/delete-question-in-exam',authMiddleware,async(req,res)=>{
+    try {
+        // delete question in Question collection
+        await Question.findByIdAndDelete(req.body.questionId);
+
+        //delete question in exam
+        const exam=await Exam.findById(req.body.examId);
+        exam.questions=exam.questions.filter(
+            (question)=>question._id!=req.body.questionId
+        );
+        await exam.save();
+        res.send({
+            message:"Question has been deleted successfully!",
+            success:true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message:error.message,
+            data:error,
+            success:false,
+        });
+    }
+});
 module.exports = router

@@ -88,10 +88,10 @@ function Exams() {
             <div className="flex justify-between mt-2">
                 <PageTitle title="Exams" />
 
-                <button className="primary-outline-btn flex item-center"
+                <button className="addExam-btn flex item-center"
                     onClick={() => navigate('/admin/exams/add')}>
                     <i className="ri-add-line"></i>
-                    Add Exams
+                    + Add Exams
                 </button>
             </div>
             <div className='divider'></div>

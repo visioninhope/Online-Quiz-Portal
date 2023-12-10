@@ -6,12 +6,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import TabPane from "antd/es/tabs/TabPane";
+import AddEditQuestion from "./AddEditQuestion";
+
 function AddEditExams() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
     const [examData, setExamData] = useState(null);
-
+    const [showAddEditQuestionModal, setShowAddEditQuestionModal] = useState(false);
     const onFinish = async (values) => {
         try {
             dispatch(ShowLoading());
@@ -105,19 +107,30 @@ function AddEditExams() {
                                 </Col>
                             </Row>
                             <div className="flex justify-end gap-2">
-                                <button className="primary-outline-btn" type="button" onClick={()=>navigate("/admin/exams")}>Cancel</button>
+                                <button className="primary-outline-btn" type="button" onClick={() => navigate("/admin/exams")}>Cancel</button>
 
                                 <button className="primary-contained-btn" type="submit">Save</button>
                             </div>
                         </TabPane>
+
                         {params.id && (
                             <TabPane tab="Questions" key='2'>
-                                <h1> Questions</h1>
+                                <div className="flex justify-end">
+                                    <button className="addQuestion-btn"
+                                        type="button"
+                                        onClick={() => setShowAddEditQuestionModal(true)}>+ Add Question</button>
+                                </div>
                             </TabPane>
                         )}
                     </Tabs>
                 </Form>
             )}
+
+            {showAddEditQuestionModal && <AddEditQuestion
+                setShowAddEditQuestionModal={setShowAddEditQuestionModal}
+                showAddEditQuestionModal={showAddEditQuestionModal}
+                examId={params.id}
+                refreshData={getExamData} />}
         </div>
     )
 }
