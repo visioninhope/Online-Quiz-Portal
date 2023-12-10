@@ -17,13 +17,13 @@ function AddEditExams() {
             dispatch(ShowLoading());
             let response;
 
-            if(params.id){
-                response=await editExamById({
+            if (params.id) {
+                response = await editExamById({
                     ...values,
                     examId: params.id,
                 });
-            }else{
-                response= await addExam(values);
+            } else {
+                response = await addExam(values);
             }
             if (response.success) {
                 message.success(response.message);
@@ -104,8 +104,9 @@ function AddEditExams() {
                                     </Form.Item>
                                 </Col>
                             </Row>
+                            <div className="flex justify-end gap-2">
+                                <button className="primary-outline-btn" type="button" onClick={()=>navigate("/admin/exams")}>Cancel</button>
 
-                            <div className="flex justify-end">
                                 <button className="primary-contained-btn" type="submit">Save</button>
                             </div>
                         </TabPane>
