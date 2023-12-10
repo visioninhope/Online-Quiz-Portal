@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageTitle from "../../../components/PageTitle";
-import { Col, Row, Form, Select, message, Tabs } from 'antd';
+import { Col, Row, Form, Select, message, Tabs, Table } from 'antd';
 import { addExam, editExamById, getExamById } from "../../../apicalls/exams";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ function AddEditExams() {
     const params = useParams();
     const [examData, setExamData] = useState(null);
     const [showAddEditQuestionModal, setShowAddEditQuestionModal] = useState(false);
+    const [selectedQuestion,setSelectedQuestion]=useState(null);
     const onFinish = async (values) => {
         try {
             dispatch(ShowLoading());
@@ -61,7 +62,47 @@ function AddEditExams() {
         if (params.id) {
             getExamData();
         }
-    }, [])
+    }, []);
+
+    const questionsColumns = [
+        {
+            title: "Question",
+            dataIndex: 'name',
+        },
+        {
+            title:'Option',
+            dataIndex:'option',
+            render:(text,record)=>{
+                return Object.keys(record.options).map((key)=>{
+                    return <div>{key} : {record.options[key]}</div>
+                })
+            }
+        },
+        {
+            title: "Correct Option",
+            dataIndex: 'correctOption',
+            render:(text,record)=>{
+                return `${record.correctOption} : ${record.options[record.correctOption]}`;
+            },
+        }, {
+            title: "Action",
+            dataIndex: 'action',
+            render: (text, record) => (
+                <div className='flex gap-2'>
+                    <i className="ri-pencil-line"
+                        onClick={()=>{
+                            setSelectedQuestion(record);
+                            setShowAddEditQuestionModal(true);
+                        }}></i>
+                    <i className="ri-delete-bin-line"
+                        onClick={() => {}}>
+
+                    </i>
+                </div>
+            )
+        }
+
+    ]
     return (
         <div>
             <PageTitle title={
@@ -118,8 +159,11 @@ function AddEditExams() {
                                 <div className="flex justify-end">
                                     <button className="addQuestion-btn"
                                         type="button"
-                                        onClick={() => setShowAddEditQuestionModal(true)}>+ Add Question</button>
+                                        onClick={() => setShowAddEditQuestionModal(true)
+                                        }>+ Add Question</button>
                                 </div>
+                                <Table columns={questionsColumns}
+                                dataSource={examData?.questions || []} />
                             </TabPane>
                         )}
                     </Tabs>
