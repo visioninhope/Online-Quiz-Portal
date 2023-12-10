@@ -37,7 +37,7 @@ function Exams() {
             render: (text, record) => (
                 <div className='flex gap-2'>
                     <i className="ri-pencil-line"
-                    onClick={() => navigate(`/admin/exams/edit/${record._id}`)}></i>
+                    onClick={() => navigate(`/admin/exams/add/${record._id}`)}></i>
                     <i className="ri-delete-bin-line"></i>
                 </div>),
         },
