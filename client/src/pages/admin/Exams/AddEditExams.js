@@ -14,7 +14,7 @@ function AddEditExams() {
     const params = useParams();
     const [examData, setExamData] = useState(null);
     const [showAddEditQuestionModal, setShowAddEditQuestionModal] = useState(false);
-    const [selectedQuestion,setSelectedQuestion]=useState(null);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
     const onFinish = async (values) => {
         try {
             dispatch(ShowLoading());
@@ -70,10 +70,10 @@ function AddEditExams() {
             dataIndex: 'name',
         },
         {
-            title:'Option',
-            dataIndex:'option',
-            render:(text,record)=>{
-                return Object.keys(record.options).map((key)=>{
+            title: 'Option',
+            dataIndex: 'option',
+            render: (text, record) => {
+                return Object.keys(record.options).map((key) => {
                     return <div>{key} : {record.options[key]}</div>
                 })
             }
@@ -81,7 +81,7 @@ function AddEditExams() {
         {
             title: "Correct Option",
             dataIndex: 'correctOption',
-            render:(text,record)=>{
+            render: (text, record) => {
                 return `${record.correctOption} : ${record.options[record.correctOption]}`;
             },
         }, {
@@ -90,12 +90,12 @@ function AddEditExams() {
             render: (text, record) => (
                 <div className='flex gap-2'>
                     <i className="ri-pencil-line"
-                        onClick={()=>{
+                        onClick={() => {
                             setSelectedQuestion(record);
                             setShowAddEditQuestionModal(true);
                         }}></i>
                     <i className="ri-delete-bin-line"
-                        onClick={() => {}}>
+                        onClick={() => { }}>
 
                     </i>
                 </div>
@@ -163,7 +163,7 @@ function AddEditExams() {
                                         }>+ Add Question</button>
                                 </div>
                                 <Table columns={questionsColumns}
-                                dataSource={examData?.questions || []} />
+                                    dataSource={examData?.questions || []} />
                             </TabPane>
                         )}
                     </Tabs>
@@ -174,7 +174,9 @@ function AddEditExams() {
                 setShowAddEditQuestionModal={setShowAddEditQuestionModal}
                 showAddEditQuestionModal={showAddEditQuestionModal}
                 examId={params.id}
-                refreshData={getExamData} />}
+                refreshData={getExamData}
+                selectedQuestion={selectedQuestion}
+                setSelectedQuestion={setSelectedQuestion} />}
         </div>
     )
 }
