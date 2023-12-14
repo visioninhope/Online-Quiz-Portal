@@ -15,7 +15,7 @@ function WriteExam() {
     const [questions = [], setQuestions] = useState([]);
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
-
+    const [result = {}, setResult] = useState({});
 
     const getExamData = async () => {
         try {
@@ -36,6 +36,29 @@ function WriteExam() {
             message.error(error.message);
         }
     }
+
+    const calculateResult = () => {
+        let correctAnswers = [];
+        let wrongAnswers = [];
+        questions.forEach((question, index) => {
+            if (question.correctOption === selectedOptions[index]) {
+                correctAnswers.push(question);
+            } else {
+                wrongAnswers.push(question);
+            }
+        });
+
+        let verdict = "Pass!";
+        if (correctAnswers.length < examData.passingMarks) {
+            verdict = "Fail!";
+        }
+        setResult({
+            correctAnswers,
+            wrongAnswers,
+            verdict,
+        });
+        setView("result");
+    };
     useEffect(() => {
         if (params.id) {
             getExamData();
@@ -79,14 +102,55 @@ function WriteExam() {
                             }
                         }}>Previous</button>)}
 
-                        {selectedQuestionIndex<questions.length-1 && (
-                            <button className='primary-contained-btn' onClick={()=>{
-                                setSelectedQuestionIndex(selectedQuestionIndex+1);
+                        {selectedQuestionIndex < questions.length - 1 && (
+                            <button className='primary-contained-btn' onClick={() => {
+                                setSelectedQuestionIndex(selectedQuestionIndex + 1);
                             }}>Next</button>
+                        )}
+
+                        {selectedQuestionIndex === questions.length - 1 && (
+                            <button className='primary-contained-btn' onClick={() => {
+                                calculateResult();
+
+                            }}>Submit</button>
                         )}
                     </div>
                 </div>
                 }
+
+                {view === "result" && (
+                    <div className='flex item-center mt-2 justify-center'>
+                        <div className='flex flex-col gap-2 result'>
+                            <h1 className='text-2xl'>RESULT</h1>
+
+                            <div className='marks'>
+                                <h1 className='text-md'>Total Marks: {examData.totalMarks}</h1>
+                                <h1 className='text-md'>Obtained Marks: {result.correctAnswers.length} </h1>
+                                <h1 className='text-md'>Wrong Answers: {result.wrongAnswers.length}</h1>
+                                <h1 className='text-md'>Passing Marks: {examData.passingMarks}</h1>
+                                <h1 className='text-md'>VERDICT : {result.verdict}</h1>
+                            </div>
+                        </div>
+                        <div className='lottie-animation'>
+                            {result.verdict === "Pass!" && (
+                                <dotlottie-player
+                                    src="https://lottie.host/c9b28efc-0a4d-4bdd-90bb-55a53338b9d9/fBGADkeFgB.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay></dotlottie-player>
+                            )}
+
+                            {result.verdict === "Fail!" && (
+                                <dotlottie-player src="https://lottie.host/8bbef95e-e806-47fa-b90c-95765ed77af7/sGhHAW1Pxd.json"
+                                    background="transparent"
+                                    speed="1"
+                                    loop
+                                    autoplay></dotlottie-player>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         )
     );

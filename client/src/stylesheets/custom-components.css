@@ -40,6 +40,19 @@
     border-radius: 3px;
     border: 2px solid var(--primary);
 }
+
+.result{
+    background-color: rgb(186, 222, 114);
+    padding: 30px;
+    color: white !important;
+    border-radius: 5px;
+}
+
+.lottie-animation{
+    height: 200px;
+
+}
+
 @keyframes loader {
     0%{
         transform: rotate(0deg);
