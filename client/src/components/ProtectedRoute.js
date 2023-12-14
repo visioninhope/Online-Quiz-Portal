@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { HideLoading, ShowLoading } from '../redux/loaderSlice.js';
 
 function ProtectedRoute({ children }) {
-   
+
     const { user } = useSelector((state) => state.users);
     const dispatch = useDispatch();
     const [menu, setMenu] = useState([]);
@@ -53,9 +53,9 @@ function ProtectedRoute({ children }) {
         },
         {
             title: "Exams",
-            paths:["/admin/exams","/admin/exams/add"],
-            icon:<i className='ri-file-list-line'></i>,
-            onclick:()=>navigate('/admin/exams'),
+            paths: ["/admin/exams", "/admin/exams/add"],
+            icon: <i className='ri-file-list-line'></i>,
+            onclick: () => navigate('/admin/exams'),
         },
         {
             title: "Reports",
@@ -96,21 +96,27 @@ function ProtectedRoute({ children }) {
                 message.error(response.message)
             }
         } catch (error) {
+            navigate('/login');
+            dispatch(HideLoading());
             message.error(error.message);
         }
     }
     useEffect(() => {
-        getUserData()
+        if (localStorage.getItem("token")) {
+            getUserData();
+        } else {
+            navigate('/login');
+        }
     }, []);
 
     const activeRoute = window.location.pathname;
 
-    const getIsActiveOrNot=(paths)=>{
-        if(paths.includes(activeRoute)){
+    const getIsActiveOrNot = (paths) => {
+        if (paths.includes(activeRoute)) {
             return true;
-        }else{
-            if(activeRoute.includes('/admin/exams/add') && paths.includes('/admin/exams')){
-            return true;
+        } else {
+            if (activeRoute.includes('/admin/exams/add') && paths.includes('/admin/exams')) {
+                return true;
             }
             return false;
         }
@@ -120,13 +126,13 @@ function ProtectedRoute({ children }) {
             <div className="flex gap-1 w-full h-full h-100">
                 <div className="sidebar">
                     <div className='menu'>
-                    <div className='close'>
-                        {!collapsed && <i class="ri-close-line"
-                            onClick={() => setCollapset(true)}></i>}
-                        {collapsed && <i class="ri-menu-line"
-                            onClick={() => setCollapset(false)}></i>}
+                        <div className='close'>
+                            {!collapsed && <i class="ri-close-line"
+                                onClick={() => setCollapset(true)}></i>}
+                            {collapsed && <i class="ri-menu-line"
+                                onClick={() => setCollapset(false)}></i>}
 
-                    </div>
+                        </div>
 
                         {menu.map((item, index) => {
 
