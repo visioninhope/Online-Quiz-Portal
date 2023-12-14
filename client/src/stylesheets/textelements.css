@@ -28,6 +28,9 @@ h1{
     margin-bottom: 0px !important;
     padding-bottom: 0px !important;
 }
+.text-center{
+    text-align: center;
+}
 
 a{
     color: var(--primary)!important;
