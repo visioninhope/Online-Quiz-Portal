@@ -1,6 +1,6 @@
 import React from "react";
 
-function Instructions({examData}) {
+function Instructions({examData, setView}) {
     return (
         <div className="flex flex-col item-center gap-2">
             <ul className="flex flex-col gap-2">
@@ -14,7 +14,9 @@ function Instructions({examData}) {
                 <li>Total marks of the exam is <span className="font-bold">{examData.totalMarks}</span>.</li>
                 <li>Passing marks of the exam is <span className="font-bold">{examData.passingMarks}</span>.</li>
             </ul>
-            <button className="primary-outline-btn">Start Exam</button>
+            <button className="primary-outline-btn" onClick={()=>{
+                setView('questions')
+            }}>Start Exam</button>
         </div>
     )
 }

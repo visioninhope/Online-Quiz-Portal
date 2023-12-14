@@ -31,29 +31,31 @@ function Home() {
         getExam();
     }, []);
     return (
-        <div>
-        {/*`Hi ${user.name}, Welcome to Online Quiz Portal!`*/}
-            <PageTitle title={`Hi ${user.name}, Welcome to Online Quiz Portal!`} />
-            <div className='divider'></div>
-            <Row gutter={[16, 16]}>
-                {exams.map((exam) => (
-                    <Col span={6}>
-                        <div className='card-lg flex flex-col gap-1 p-2'>
-                            <h1 className='text-2xl'><b>{exam.name}</b></h1>
-                            <h1 className='text-md'>Category: {exam.category}</h1>
-                            <h1 className='text-md'>Total Marks: {exam.totalMarks}</h1>
-                            <h1 className='text-md'>Passing Marks: {exam.passingMarks}</h1>
-                            <h1 className='text-md'>Duration: {exam.duration}</h1>
-
-                            <button className='primary-outline-btn' onClick={()=>{
-                                navigate(`/user/write-exam/${exam._id}`)
-                            }}>
-                            Start Exam</button>
-                        </div>
-                    </Col>
-                ))}
-            </Row>
-        </div>
+        user && (
+            <div>
+            {/*`Hi ${user.name}, Welcome to Online Quiz Portal!`*/}
+                <PageTitle title={`Hi ${user.name}, Welcome to Online Quiz Portal!`} />
+                <div className='divider'></div>
+                <Row gutter={[16, 16]}>
+                    {exams.map((exam) => (
+                        <Col span={6}>
+                            <div className='card-lg flex flex-col gap-1 p-2'>
+                                <h1 className='text-2xl'><b>{exam?.name}</b></h1>
+                                <h1 className='text-md'>Category: {exam.category}</h1>
+                                <h1 className='text-md'>Total Marks: {exam.totalMarks}</h1>
+                                <h1 className='text-md'>Passing Marks: {exam.passingMarks}</h1>
+                                <h1 className='text-md'>Duration: {exam.duration}</h1>
+    
+                                <button className='primary-outline-btn' onClick={()=>{
+                                    navigate(`/user/write-exam/${exam._id}`)
+                                }}>
+                                Start Exam</button>
+                            </div>
+                        </Col>
+                    ))}
+                </Row>
+            </div>
+        )
     )
 }
 
