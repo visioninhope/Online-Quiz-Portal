@@ -2,7 +2,7 @@ import React from "react";
 
 function PageTitle({title}){
     return (
-        <div >
+        <div className="mt-2">
             <h1>{title}</h1>
         </div>
     )

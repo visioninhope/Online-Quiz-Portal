@@ -70,3 +70,12 @@ export const editQuestionById = async (payload) => {
         return error.response.data;
     }
 }
+
+export const deleteQuestionById=async(payload)=>{
+    try {
+        const response=await axiosInstance.post('/api/exams/delete-question-in-exam',payload);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

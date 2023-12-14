@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageTitle from "../../../components/PageTitle";
 import { Col, Row, Form, Select, message, Tabs, Table } from 'antd';
-import { addExam, editExamById, getExamById } from "../../../apicalls/exams";
+import { addExam, deleteQuestionById, editExamById, getExamById } from "../../../apicalls/exams";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
@@ -64,6 +64,26 @@ function AddEditExams() {
         }
     }, []);
 
+    const deleteQuestion=async (questionId)=>{
+        try {
+            dispatch(ShowLoading());
+            const response=await deleteQuestionById({
+                questionId,
+                examId:params.id
+            });
+            dispatch(HideLoading());
+            if(response.success){
+                message.success(response.message);
+                getExamData();
+            }else{
+                message.error(response.message);
+            }
+        } catch (error) {
+            dispatch(HideLoading());
+            message.error(error.message);
+        }
+    }
+
     const questionsColumns = [
         {
             title: "Question",
@@ -95,7 +115,9 @@ function AddEditExams() {
                             setShowAddEditQuestionModal(true);
                         }}></i>
                     <i className="ri-delete-bin-line"
-                        onClick={() => { }}>
+                        onClick={() => { 
+                            deleteQuestion(record._id);
+                        }}>
 
                     </i>
                 </div>
@@ -162,7 +184,7 @@ function AddEditExams() {
                                         onClick={() => setShowAddEditQuestionModal(true)
                                         }>+ Add Question</button>
                                 </div>
-                                <Table columns={questionsColumns}
+                                <Table className='mt-2' columns={questionsColumns}
                                     dataSource={examData?.questions || []} />
                             </TabPane>
                         )}
