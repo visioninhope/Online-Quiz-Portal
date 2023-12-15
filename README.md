@@ -41,7 +41,7 @@ cd client && npm install
   - After FrontEnd and BackEnd dependencies Installation turn on Nodemon server.
   - In the root:
 ```
-npm run watch
+nodemon server/server.js
 ```
   - Next:
 ```
