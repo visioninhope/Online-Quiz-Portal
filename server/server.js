@@ -6,6 +6,7 @@ app.use(express.json());
 const usersRoute=require('./routes/usersRoute');
 const dbConfig = require('./config/dbConfig');
 const examsRoute=require('./routes/examsRoute');
+const reportsRoute=require('./routes/reportsRoute');
 
 app.use('/api/users',usersRoute);
 app.use('/api/exams',examsRoute)
