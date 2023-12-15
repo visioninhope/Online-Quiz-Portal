@@ -53,6 +53,18 @@
 
 }
 
+.timer{
+    background-color: orange;
+    color: white !important;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
 @keyframes loader {
     0%{
         transform: rotate(0deg);

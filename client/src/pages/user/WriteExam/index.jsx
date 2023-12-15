@@ -16,6 +16,9 @@ function WriteExam() {
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
     const [result = {}, setResult] = useState({});
+    const [secondsLeft=0,setSecondsLeft]=useState(0);
+    const [timeUp,setTimeUp]=useState(false);
+    const [intervalId,setIntervalId]=useState(null);
 
     const getExamData = async () => {
         try {
@@ -27,7 +30,7 @@ function WriteExam() {
             if (response.success) {
                 setQuestions(response.data.questions);
                 setExamData(response.data);
-
+                setSecondsLeft(response.data.duration);
             } else {
                 message.error(response.message);
             }
@@ -59,6 +62,26 @@ function WriteExam() {
         });
         setView("result");
     };
+
+    const startTimer = () => {
+        let totalSeconds = examData.duration;
+        const intervalId = setInterval(() => {
+          if (totalSeconds > 0) {
+            totalSeconds = totalSeconds - 1;
+            setSecondsLeft(totalSeconds);
+          } else {
+            setTimeUp(true);
+          }
+        }, 1000);
+        setIntervalId(intervalId);
+      };
+
+    useEffect(()=>{
+        if(timeUp){
+            clearInterval(intervalId);
+            calculateResult();
+        }
+    },[timeUp]);
     useEffect(() => {
         if (params.id) {
             getExamData();
@@ -71,13 +94,17 @@ function WriteExam() {
                 <h1 className='text-center'>{examData.name}</h1>
                 <div className='divider'></div>
 
-                {view === "instructions" && <Instructions examData={examData} view={view} setView={setView} />}
+                {view === "instructions" && <Instructions examData={examData} setView={setView} startTimer={startTimer} />}
                 {view === "questions" && <div className='flex flex-col gap-2'>
-                    <h1 className='text-2xl'>
-                        {selectedQuestionIndex + 1}: {" "}
-                        {questions[selectedQuestionIndex].name}
-                    </h1>
-
+                    <div className='flex justify-between'>
+                        <h1 className='text-2xl'>
+                            {selectedQuestionIndex + 1}: {" "}
+                            {questions[selectedQuestionIndex].name}
+                        </h1>
+                        <div className='timer'>
+                        <span className='text-2xl'>{secondsLeft}</span>
+                        </div>
+                    </div>
                     <div className='flex flex-col gap-2'>
                         {Object.keys(questions[selectedQuestionIndex].options).map((option, index) => {
                             return (
@@ -110,6 +137,8 @@ function WriteExam() {
 
                         {selectedQuestionIndex === questions.length - 1 && (
                             <button className='primary-contained-btn' onClick={() => {
+                                setTimeUp(true);
+                                clearInterval(intervalId);
                                 calculateResult();
 
                             }}>Submit</button>
